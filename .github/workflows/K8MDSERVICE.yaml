@@ -11,7 +11,7 @@ env:
     CLUSTER_RESOURCE_GROUP: Srini-Workshop
     CONTAINER_NAME: mdservice1.0
     DEPLOYMENT_MANIFEST_PATH: |
-        ./MDSERVICE.text
+              ./MDSERVICE.YAML
 jobs:
     buildImage:
         permissions:
