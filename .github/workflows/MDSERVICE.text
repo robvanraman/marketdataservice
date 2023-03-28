@@ -1,0 +1,50 @@
+- apiVersion: v1
+  kind: Namespace
+  metadata:
+    name: kube-workshop
+  spec:
+    finalizers:
+      - kubernetes
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    name: mdservice1.0
+    namespace: kube-workshop
+  spec:
+    replicas: 2
+    selector:
+      matchLabels:
+        app: mdservice1.0
+    template:
+      metadata:
+        labels:
+          app: mdservice1.0
+      spec:
+        nodeSelector:
+          kubernetes.io/os: linux
+        containers:
+          - name: mdservice10
+            image: K8Workshopregistry.azurecr.io/mdservice1.0:d60a017c15d0e65878f0bb5054d0414e0c1b0803
+            ports:
+              - containerPort: 80
+            resources:
+              requests:
+                cpu: '2'
+                memory: 512M
+              limits:
+                cpu: '256'
+                memory: 11400G
+- apiVersion: v1
+  kind: Service
+  metadata:
+    name: mdservice1.0-service
+    namespace: kube-workshop
+  spec:
+    type: LoadBalancer
+    ports:
+      - targetPort: 80
+        name: port80
+        port: 80
+        protocol: TCP
+    selector:
+      app: mdservice1.0
